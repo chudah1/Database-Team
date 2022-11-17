@@ -3,11 +3,43 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Ecommerce_databse</title>
-	<!-- //connect to the library -->
+	<title>Tranquillo Ecommerce Databse</title>
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 </head>
 <body>
+		<div class="nav-section">
+				<nav class="navbar navbar-expand-lg navbar-light bg-light  fixed-top">
+			<a class="navbar-brand px-5" href="#"><h5 class="brand">Tranquillo Inc</h5></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav mx-l">
+				<li class="nav-item mx-5 ">
+				<a class="nav-link" href="#home">Home <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item mx-3">
+				<a class="nav-link" href="#about">Packages</a>
+				</li>
+				<li class="nav-item mx-3">
+				<a class="nav-link" href="#projects">Product Category Revenue</a>
+				</li>
+				<li class="nav-item mx-3">
+				<a class="nav-link" href="#contact">Rated Products</a>
+				</li>
+				<li class="nav-item mx-3">
+				<a class="nav-link" href="#contact">Top Product Category</a>
+				</li>
+				<li class="nav-item mx-3">
+				<a class="nav-link" href="#contact">Preferred Payments</a>
+				</li>
+			</ul>
+			</div>
+		</nav>
+		</div>
 	 <?php
 	 	//database connection parameters
 	 	//change the database name to suite what you have in phpmyadmin
@@ -25,23 +57,28 @@
 		}
 		
 		//write sql
-		$sql = "SELECT * FROM `customers`";
-		$sql = " "
+		$sql = "select P.Package_name as 'Package', count(S.package_id) as 'Number of Subscribers'
+		from Packages P
+		inner join Subscribers S
+		using(package_id)
+		group by P.Package_name
+		order by count(S.package_id) desc";
 
 		//execute sql
 		$result = $conn->query($sql);
 		//check if any record was found
 		if ($result->num_rows > 0){
 			//create an array
-			$country_list  = array();
+			$packages_list  = array();
+			$subscribers = array();
 			  // loop through the query result and fetch one record at a time
 			  while($row = $result->fetch_assoc()) {
 				  	//add record to array 
-				  	//the curtomer_counrtry is a field/column in the customer table based on the query on line 27
-				  	array_push($country_list, $row["firstname"]);
+				  	array_push($packages_list, $row["Package"]);
+					array_push($subscribers, $row["Number of Subscribers"]);
 			   }
 
-		}//end of  if condition
+		}
 		else{
 			echo("No records found");
 		}
@@ -53,16 +90,11 @@
 	<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
 
 	<script>
-
-
-	// example of record coming from database below
 	var xValues = <?php  
 				//echo the array list on 39 and 46 as json list of items
-				echo json_encode($country_list)
-				?>;
-	
-	// the data list below are hardcoded
-	var yValues = [55, 49, 44,40, 50];
+				echo json_encode($packages_list)?>;
+	var yValues = <?php
+	echo json_decode($subscribers)?>;
 	var barColors = ["red", "green","blue", "yellow"];
 
 	new Chart("myChart", {
@@ -78,7 +110,7 @@
 	    legend: {display: false},
 	    title: {
 	      display: true,
-	      text: "World Wine Production 2018"
+	      text: "Most Preferred Subscribed Package"
 	    }
 	  }
 	});
