@@ -26,7 +26,7 @@
 				<a class="nav-link" href="Preffered Packages.php">Packages</a>
 				</li>
 				<li class="nav-item mx-3">
-				<a class="nav-link" href="Product_category.php">Product Category Revenue</a>
+				<a class="nav-link" href="product_category_revenue.php">Product Category Revenue</a>
 				</li>
 				<li class="nav-item mx-3">
 				<a class="nav-link" href="Top Products.php">Rated Products</a>
@@ -41,12 +41,6 @@
 			</div>
 		</nav>
 		</div>
-        <div class="container">
-			<h2>Packages Count</h2>
-        <canvas id="myChart" style=" margin:50px;width:100%;max-width:800px"></canvas>
-    <canvas id="pieChart" style="margin: 20px; width:60%;max-width:400px"></canvas>
-</div>
-
 	 <?php
 	 	//database connection parameters
 	 	//change the database name to suite what you have in phpmyadmin
@@ -65,26 +59,33 @@
 		 
 
 		//write sql
-		$sql = "Select P.Package_name as 'Package', count(S.package_id) as 'Number of Subscribers', round(count(S.package_id)*100/(select count(customer_id) from subscribers),2) as 'Percentage of Subscriptions'
-		from Packages P
-		inner join Subscribers S
-		using(package_id)
-		group by P.Package_name
-		order by count(S.package_id) desc";
+		$sql = "select category_name as 'Category', sum(`Total Revenue`) as `Total Revenue`,  
+		round(sum(`Total Revenue`)*100/(select sum(Unit_price*quantity) 
+		from products as P, order_items as O where P.product_id=O.product_id),2) as 'Percentage of Revenue'
+		from(
+		select C.category_name, P.Unit_price*O.quantity as 'Total Revenue'
+		from products P
+		inner join 
+		order_items O
+		on O.product_id= P.product_id
+		inner join Product_categories C
+		using(Category_id) ) as s
+		group by  category_name
+		order by `Total Revenue` desc LIMIT 5";
 
 		//execute sql
 		$result = $conn->query($sql);
 		//check if any record was found
 		if ($result->num_rows > 0){
-			//create an array
-			$packages  = array();
-			$count = array();
-			$percentage_count = array();
+			$categories  = array();
+			$revenue = array();
+			$percentage_count =array();
 			  // loop through the query result and fetch one record at a time
 			  while($row = $result->fetch_assoc()) {
-				  	array_push($packages, $row["Package"]);
-					array_push($count, $row["Number of Subscribers"]);
-					array_push($percentage_count, $row["Percentage of Subscriptions"]);
+				  	array_push($categories, $row["Category"]);
+					array_push($revenue, $row["Total Revenue"]);
+					array_push($percentage_count, $row["Percentage of Revenue"]);
+
 			   }
 
 		}
@@ -95,18 +96,20 @@
 		//close the connection to database
 		$conn->close();
 	?> 
-	
+
+	<canvas id="bar" style="margin: 70px; width:100%;max-width:800px"></canvas>
+	<canvas id="pie" style="margin: 50px; width:100%;max-width:500px"></canvas>
 
 
 	<script>
-	var xValues = <?php  echo json_encode($packages) ?>;
-	var yValues = <?php echo json_encode($count)?>;
-	var y_percentage = <?php echo json_encode($percentage_count)?>;
+	var xValues = <?php  echo json_encode($categories) ?>;
+	var yValues = <?php echo json_encode($revenue)?>;
+	var percentages = <?php echo json_encode($percentage_count)?>;
 
-	var barColors = ["red", "blue", "yellow", "green", "purple"];
+	var barColors = ["#fb5c00", "#c0ca32", "#00897b", "#3949ab", "#d81b60", "#827717"];
 
-    new Chart("pieChart", {
-	  type: "doughnut",
+	new Chart("bar", {
+	  type: "bar",
 	  data: {
 	    labels: xValues,
 	    datasets: [{
@@ -118,29 +121,28 @@
 	    legend: {display: false},
 	    title: {
 	      display: true,
-	      text: "Packages In Percentages"
+	      text: "Revenue From Each Product Category"
 	    }
 	  }
 	});
 
-	new Chart("myChart", {
-	  type: "bar",
+	new Chart("pie", {
+	  type: "doughnut",
 	  data: {
 	    labels: xValues,
 	    datasets: [{
 	      backgroundColor: barColors,
-	      data: y_percentage
+	      data: percentages
 	    }]
 	  },
 	  options: {
 	    legend: {display: false},
 	    title: {
 	      display: true,
-	      text: "Packages Count"
+	      text: "Revenue From Each Product Category In Percentages"
 	    }
 	  }
 	});
-   
 	</script>
 
 

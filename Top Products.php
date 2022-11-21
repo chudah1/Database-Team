@@ -20,7 +20,7 @@
 			<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav mx-l">
 				<li class="nav-item mx-5 ">
-				<a class="nav-link" href="#home">Home <span class="sr-only">(current)</span></a>
+				<a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<li class="nav-item mx-3">
 				<a class="nav-link" href="Preffered Packages.php">Packages</a>
@@ -116,7 +116,7 @@
 	<script>
 	var xValues = <?php  echo json_encode($products) ?>;
 	var yValues = <?php echo json_encode($quantity)?>;
-	var barColors = ["red", "blue", "yellow", "green", "purple", "orange", "pink", "violet"];
+	var barColors = ["red", "blue", "yellow", "green", "purple", "orange", "pink", "violet", "#ffd74c", "#00e5ff", "#ffebee", "#7bffa2"];
 
 	var ratings = <?php echo json_encode($rating)?>;
 

@@ -26,7 +26,7 @@
 				<a class="nav-link" href="Preffered Packages.php">Packages</a>
 				</li>
 				<li class="nav-item mx-3">
-				<a class="nav-link" href="Product_category.php">Product Category Revenue</a>
+				<a class="nav-link" href="product_category_revenue.php">Product Category Revenue</a>
 				</li>
 				<li class="nav-item mx-3">
 				<a class="nav-link" href="Top Products.php">Rated Products</a>
@@ -59,29 +59,29 @@
 		 
 
 		//write sql
-		$sql = "select category_name, sum(`Total Revenue`) as `Total Revenue` from(
-            select C.category_name, P.Unit_price*O.quantity as 'Total Revenue'
-            from products P
-            inner join 
-            order_items O
-            on O.product_id= P.product_id
-            inner join Product_categories C
-            using(Category_id) ) as s
-            group by  category_name
-            order by `Total Revenue` desc";
+		$sql = "Select category_name 'Category', count(category_id) as 'Number of orders', round(count(category_id)*100/(select count(order_id) from order_items),2) as 'Percentage of Orders' 
+		from (Select *
+		from products P
+		right join order_items O
+		using(product_id)) as A
+		left join Product_categories
+		using(category_id)
+		group by category_name
+		order by count(Category_id) desc";
 
-		print_r($sql);
 		//execute sql
 		$result = $conn->query($sql);
 		//check if any record was found
 		if ($result->num_rows > 0){
-			//create an array
 			$categories  = array();
-			$revenue = array();
+			$orders = array();
+			$percentage_count =array();
 			  // loop through the query result and fetch one record at a time
 			  while($row = $result->fetch_assoc()) {
-				  	array_push($categories, $row["category_name"]);
-					array_push($revenue, $row["Total Revenue"]);
+				  	array_push($categories, $row["Category"]);
+					array_push($orders, $row["Number of orders"]);
+					array_push($percentage_count, $row["Percentage of Orders"]);
+
 			   }
 
 		}
@@ -93,15 +93,19 @@
 		$conn->close();
 	?> 
 
-	<canvas id="myChart" style="margin: 50px; width:100%;max-width:800px"></canvas>
+	<canvas id="bar" style="margin: 70px; width:100%;max-width:800px"></canvas>
+	<canvas id="pie" style="margin: 50px; width:100%;max-width:500px"></canvas>
+
 
 	<script>
 	var xValues = <?php  echo json_encode($categories) ?>;
-	var yValues = <?php echo json_encode($revenue)?>;
-	var barColors = ["red", "blue", "yellow", "green", "purple"];
+	var yValues = <?php echo json_encode($orders)?>;
+	var percentages = <?php echo json_encode($percentage_count)?>;
 
-	new Chart("myChart", {
-	  type: "horizontalBar",
+	var barColors = ["red", "blue", "yellow", "green", "purple", "#827717"];
+
+	new Chart("bar", {
+	  type: "bar",
 	  data: {
 	    labels: xValues,
 	    datasets: [{
@@ -113,7 +117,25 @@
 	    legend: {display: false},
 	    title: {
 	      display: true,
-	      text: "Most Preferred Subscribed Package"
+	      text: "Revenue From Each Product Category"
+	    }
+	  }
+	});
+
+	new Chart("pie", {
+	  type: "doughnut",
+	  data: {
+	    labels: xValues,
+	    datasets: [{
+	      backgroundColor: barColors,
+	      data: percentages
+	    }]
+	  },
+	  options: {
+	    legend: {display: false},
+	    title: {
+	      display: true,
+	      text: "Revenue From Each Product Category In Percentages"
 	    }
 	  }
 	});
