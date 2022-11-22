@@ -23,7 +23,7 @@
 				<a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<li class="nav-item mx-3">
-				<a class="nav-link" href="Preffered Packages.php">Packages</a>
+				<a class="nav-link" href="Preferred Subscriptions.php">Packages</a>
 				</li>
 				<li class="nav-item mx-3">
 				<a class="nav-link" href="product_category_revenue.php">Product Category Revenue</a>
@@ -35,7 +35,7 @@
 				<a class="nav-link" href="Product_category.php">Top Product Category</a>
 				</li>
 				<li class="nav-item mx-3">
-				<a class="nav-link" href="#contact">Preferred Payments</a>
+				<a class="nav-link" href="fav_brands.php">Brands</a>
 				</li>
 			</ul>
 			</div>
@@ -92,9 +92,10 @@
 		//close the connection to database
 		$conn->close();
 	?> 
-
+<div class = "container">
 	<canvas id="bar" style="margin: 70px; width:100%;max-width:800px"></canvas>
-	<canvas id="pie" style="margin: 50px; width:100%;max-width:500px"></canvas>
+	<canvas id="pie" style="margin: 50px; width:100%;max-width:300px"></canvas>
+	<//div>
 
 
 	<script>
@@ -117,8 +118,15 @@
 	    legend: {display: false},
 	    title: {
 	      display: true,
-	      text: "Revenue From Each Product Category"
-	    }
+	      text: "Quantity Bought From Each Product Category"
+	    },
+		scales: {
+        	yAxes: [{
+            	ticks: {
+                	beginAtZero: true
+            	}
+        	}]
+    	}
 	  }
 	});
 
@@ -135,7 +143,7 @@
 	    legend: {display: false},
 	    title: {
 	      display: true,
-	      text: "Revenue From Each Product Category In Percentages"
+	      text: "Quantity Bought From Each Product Category In Percentages"
 	    }
 	  }
 	});

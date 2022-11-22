@@ -23,10 +23,10 @@
 				<a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<li class="nav-item mx-3">
-				<a class="nav-link" href="Preffered Packages.php">Packages</a>
+				<a class="nav-link" href="Preferred Subscriptions.php">Packages</a>
 				</li>
 				<li class="nav-item mx-3">
-				<a class="nav-link" href="Product_category.php">Product Category Revenue</a>
+				<a class="nav-link" href="product_category_revenue.php">Product Category Revenue</a>
 				</li>
 				<li class="nav-item mx-3">
 				<a class="nav-link" href="Top Products.php">Rated Products</a>
@@ -35,7 +35,7 @@
 				<a class="nav-link" href="Product_category.php">Top Product Category</a>
 				</li>
 				<li class="nav-item mx-3">
-				<a class="nav-link" href="#contact">Preferred Payments</a>
+				<a class="nav-link" href="fav_brands.php">Brands</a>
 				</li>
 			</ul>
 			</div>
@@ -104,7 +104,7 @@
 	var yValues = <?php echo json_encode($count_subscribers)?>;
     var percentage = <?php echo json_encode($percentage_count)?>;
 
-	var barColors = ["yellow", "green"];
+	var barColors = ["yellow", "green", "#f57c00", "#e53935", "pink"];
 
     new Chart("pieChart", {
 	  type: "doughnut",
@@ -119,7 +119,7 @@
 	    legend: {display: true},
 	    title: {
 	      display: true,
-	      text: "Preferred Subscription Packages In Percentages"
+	      text: "Subscription Packages In Percentages"
 	    }
 	  }
 	});
@@ -137,8 +137,15 @@
 	    legend: {display: false},
 	    title: {
 	      display: true,
-	      text: "Preferred Subscription Packages"
-	    }
+	      text: "Subscription Packages"
+	    },
+		scales: {
+        	yAxes: [{
+            	ticks: {
+                	beginAtZero: true
+            	}
+        	}]
+    	}
 	  }
 	});
    

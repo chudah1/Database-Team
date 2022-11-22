@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Tranquillo Ecommerce Databse</title>
+	<title>Tranquillo Ecommerce Database</title>
 	<link rel="stylesheet" href="css/style.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
@@ -20,13 +20,13 @@
 			<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav mx-l">
 				<li class="nav-item mx-5 ">
-				<a class="nav-link" href="#home">Home <span class="sr-only">(current)</span></a>
+				<a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<li class="nav-item mx-3">
-				<a class="nav-link" href="index.php">Packages</a>
+				<a class="nav-link" href="Preferred Subscriptions.php">Packages</a>
 				</li>
 				<li class="nav-item mx-3">
-				<a class="nav-link" href="Product_category.php">Product Category Revenue</a>
+				<a class="nav-link" href="product_category_revenue.php">Product Category Revenue</a>
 				</li>
 				<li class="nav-item mx-3">
 				<a class="nav-link" href="Top Products.php">Rated Products</a>
@@ -35,7 +35,7 @@
 				<a class="nav-link" href="Product_category.php">Top Product Category</a>
 				</li>
 				<li class="nav-item mx-3">
-				<a class="nav-link" href="fav_brands.php">Preferred Payments</a>
+				<a class="nav-link" href="fav_brands.php">Brands</a>
 				</li>
 			</ul>
 			</div>
