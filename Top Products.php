@@ -64,14 +64,16 @@
 		 
 
 		//write sql
-		$sql = "Select P.Product_name as 'Product', sum(O.quantity) as 'Quantity Purchased'
+		$sql = "Select P.Product_name as `Product`, 
+		sum(O.quantity) as `Quantity Purchased`
         from products P
         inner join order_items O
         using(product_id)
         group by P.Product_name
         order by (O.quantity) desc";
 
-        $sql_products = "select products.Product_name as 'Product',  round(avg(rating),2 ) as 'Average rating'
+        $sql_products = "select products.Product_name as `Product`,  
+		round(avg(rating),2 ) as `Average rating`
         from rating
         right join products
         on rating.product_id = products.product_id
