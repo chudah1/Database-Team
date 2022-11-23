@@ -140,7 +140,7 @@
 	    }]
 	  },
 	  options: {
-	    legend: {display: false},
+	    legend: {display: true},
 	    title: {
 	      display: true,
 	      text: "Quantity Bought From Each Product Category In Percentages"

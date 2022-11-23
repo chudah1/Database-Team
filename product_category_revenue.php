@@ -136,7 +136,7 @@
 	    }]
 	  },
 	  options: {
-	    legend: {display: false},
+	    legend: {display: true},
 	    title: {
 	      display: true,
 	      text: "Revenue From Each Product Category In Percentages"

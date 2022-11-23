@@ -42,8 +42,8 @@
 		</nav>
 		</div>
         <div class="container">
-        <canvas id="myChart" style=" margin:50px;width:100%;max-width:800px"></canvas>;
-    <canvas id="barChart" style="margin: 50px; width:60%;max-width:800px"></canvas>;
+        <canvas id="myChart" style=" margin:50px;width:100%;max-width:800px"></canvas>
+    <canvas id="barChart" style="margin: 50px; width:60%;max-width:800px"></canvas>
 </div>
 
 	 <?php
