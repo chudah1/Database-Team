@@ -96,11 +96,8 @@
 			   }
 
 		}
-		else{
-			echo("No records found");
-		}
 
-        if ($rating_query->num_rows > 0){
+		if ($rating_query->num_rows > 0){
 			$rating = array();
 			  // loop through the query result and fetch one record at a time
 			  while($row = $rating_query->fetch_assoc()) {
@@ -111,7 +108,6 @@
 		else{
 			echo("No records found");
 		}
-
 		//close the connection to database
 		$conn->close();
 	?> 
